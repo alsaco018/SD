@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:twitter="http://www.mulesoft.org/schema/mule/twitter" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:smtps="http://www.mulesoft.org/schema/mule/smtps" xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
+http://www.mulesoft.org/schema/mule/smtps http://www.mulesoft.org/schema/mule/smtps/current/mule-smtps.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/twitter http://www.mulesoft.org/schema/mule/twitter/current/mule-twitter.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+    <spring:beans>
+        <spring:bean id="transformador" name="Bean" class="eventos.Transformador"/>
+    </spring:beans>
+    <http:request-config name="HTTP_Request_Configuration" host="magicseaweed.com" port="80" basePath="api/9d882446d55a3386f6374ee888d4d717/forecast/?spot_id=184" doc:name="HTTP Request Configuration"/>
+    <twitter:config name="Twitter" accessKey="984483549444222977-MnhUBkc8spmbt6eevJIZPWKMggAoRfp" accessSecret="UKXtoaDAi8tFRGmyBCxskxE6h4hZKGlHCUdvr1U0dDlmT" consumerKey="WTnNMMOstf0mzTkvsNy2Rm0YU" consumerSecret="paJbDszB8gE91ALC0LvkNMz1yGouXPyTKRiyfqIjgQkTgXhZiq" doc:name="Twitter"/>
+    <file:connector name="File" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/>
+    <flow name="surfsensorFlow1">
+        <poll doc:name="Poll">
+            <fixed-frequency-scheduler frequency="3" timeUnit="HOURS"/>
+            <http:request config-ref="HTTP_Request_Configuration" path="/" method="GET" doc:name="HTTP"/>
+        </poll>
+        <byte-array-to-string-transformer doc:name="Byte Array to String"/>
+        <json:json-to-object-transformer doc:name="JSON to Object"/>
+        <auto-transformer returnClass="eventos.EventoOla" name="JsonToEventoOla"></auto-transformer>
+        <smtps:outbound-endpoint host="${mail.host}" user="${mail.username}" password="${mail.password}" to="${mail.to}" from="${mail.from}" subject="Datos maritimos" responseTimeout="10000" doc:name="SMTP"/>
+    </flow>
+</mule>
