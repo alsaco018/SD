@@ -17,7 +17,8 @@ NEWSPIDER_MODULE = 'practica.spiders'
 #pipeline
 ITEM_PIPELINES = {'practica.pipelines.PracticaPipeline': 300}
 
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
+
+#Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'practica (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules

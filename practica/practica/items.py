@@ -16,3 +16,4 @@ class PracticaItem(scrapy.Item):
     fechaIni_ofr = scrapy.Field()
     duracion_ofr = scrapy.Field()
     enlace_ofr = scrapy.Field()
+    titulos_ofr = scrapy.Field()
