@@ -13,7 +13,9 @@ app=Celery("tarea",backend="rpc://", broker="pyamqp://guest@localhost//")
 def ejecutarSpider():
     command_line = 'scrapy crawl ofertas -t csv -o Datos/ofertas_items.csv'
     args = shlex.split(command_line)
+    print('Ejecución del spider')
     subprocess.call(args)
+    
 
 #este método sube a dropbox los archivos json y csv 
 def subirADropbox():
@@ -37,5 +39,6 @@ def subirADropbox():
 def interfazWeb():
     command_line = 'py json-to-html.py'
     args = shlex.split(command_line)
+    print('Ejecución de bottle')
     subprocess.call(args)
 

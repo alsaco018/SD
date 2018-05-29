@@ -23,7 +23,8 @@ def do_hello():
 	s = data.replace(',','<br>')
 	s = rep(s)
 	return s
-	#reemplaza caracteres que no queremos mostrar. Esta al estilo compare, pero el utf-8 no nos funciona bien
+	#reemplaza caracteres que no queremos mostrar. Esta al estilo compare, porque el utf-8 no nos funciona bien,
+	# hemos probado con encoding, encode, etc. y hemos terminado haciendo un apaño gitano
 def rep(s):
 	s = s.replace("<HtmlResponse 200 ","")
 	s = s.replace(r'>"}',"")
